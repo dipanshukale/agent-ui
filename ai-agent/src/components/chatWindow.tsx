@@ -148,7 +148,7 @@ export default function ChatWindow() {
             </motion.h2>
 
             <p className="text-gray-400 max-w-md mb-8">
-              Ask anything about projects, services, or technology.
+              The agent is still learning responses are generated from the knowledge currently available.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
