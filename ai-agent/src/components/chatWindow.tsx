@@ -26,6 +26,7 @@ export default function ChatWindow() {
   const handleSend = async (message: string) => {
 
     const userMessage = { text: message, isUser: true };
+
     setMessages((prev) => [...prev, userMessage]);
 
     setLoading(true);
@@ -49,133 +50,112 @@ export default function ChatWindow() {
   };
 
   const suggestions = [
-    "What cuisine does your restaurant offer?",
-    "How can I contact the restaurant?",
-    "what service you provide",
-    "What services do you provide?"
+    "What type of cusine your restaurant provides?",
+    "How can I call them?",
+    "what type of service you provide ?",
+    "What do you know?"
   ];
 
   return (
-    <div className="h-screen w-screen flex justify-center items-center bg-black overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="w-full max-w-4xl h-[85vh] flex flex-col
+      backdrop-blur-xl bg-white/5
+      border border-white/10
+      rounded-3xl shadow-2xl overflow-hidden"
+    >
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="
-        flex flex-col
-        h-screen w-full
-        md:h-[90vh] md:max-w-4xl
-        backdrop-blur-xl
-        bg-white/5
-        border border-white/10
-        rounded-none md:rounded-3xl
-        shadow-2xl
-        overflow-hidden
-        "
+      {/* Header */}
+      <div className="p-5 border-b border-white/10 flex justify-between items-center">
+
+        <h1 className="text-white text-lg font-semibold">
+          Dipanshu AI Assistant
+        </h1>
+
+        <span className="text-xs text-purple-400">
+          Intelligent Agent
+        </span>
+
+      </div>
+
+      {/* Chat Section */}
+      <div
+        ref={chatRef}
+        className="flex-1 overflow-y-auto px-6 py-6 space-y-4"
       >
 
-        {/* Header */}
-        <div className="flex-shrink-0 p-4 border-b border-white/10 flex justify-between items-center">
+        {/* Welcome UI */}
+        {messages.length === 0 && (
 
-          <h1 className="text-white text-base md:text-lg font-semibold">
-            Dipanshu AI Assistant
-          </h1>
+          <div className="flex flex-col items-center justify-center text-center h-full">
 
-          <span className="text-xs text-purple-400">
-            Intelligent Agent
-          </span>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl md:text-4xl font-bold text-white mb-4"
+            >
+              Welcome to Dipanshu's AI Assistant
+            </motion.h2>
 
-        </div>
+            <p className="text-gray-400 max-w-md mb-8">
+              Ask anything about projects, services, or technology.
+              Your intelligent AI assistant is ready to help.
+            </p>
 
-        {/* Chat Messages */}
-        <div
-          ref={chatRef}
-          className="
-          flex-1
-          overflow-y-auto
-          px-4 md:px-6
-          py-6
-          space-y-4
-          scrollbar-thin
-          scrollbar-thumb-slate-700
-          "
-        >
+            {/* Suggestions */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-lg">
 
-          {/* Welcome Screen */}
-          {messages.length === 0 && (
+              {suggestions.map((s, i) => (
 
-            <div className="flex flex-col items-center justify-center text-center h-full">
+                <button
+                  key={i}
+                  onClick={() => handleSend(s)}
+                  className="bg-white/5 hover:bg-white/10
+                  border border-white/10
+                  text-gray-200
+                  px-4 py-3
+                  rounded-xl
+                  text-sm
+                  transition"
+                >
+                  {s}
+                </button>
 
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-2xl md:text-4xl font-bold text-white mb-4"
-              >
-                Welcome to Dipanshu AI
-              </motion.h2>
-
-              <p className="text-gray-400 max-w-md mb-8 text-sm md:text-base">
-                Your personal intelligent assistant.
-                Ask anything about services, projects, or technology.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-lg">
-
-                {suggestions.map((s, i) => (
-
-                  <button
-                    key={i}
-                    onClick={() => handleSend(s)}
-                    className="
-                    bg-white/5 hover:bg-white/10
-                    border border-white/10
-                    text-gray-200
-                    px-4 py-3
-                    rounded-xl
-                    text-sm
-                    transition
-                    "
-                  >
-                    {s}
-                  </button>
-
-                ))}
-
-              </div>
+              ))}
 
             </div>
 
-          )}
+          </div>
 
-          {/* Messages */}
-          {messages.map((msg, i) => (
-            <ChatMessage key={i} message={msg.text} isUser={msg.isUser} />
-          ))}
+        )}
 
-          {/* AI thinking */}
-          {loading && (
-            <div className="flex gap-2 items-center text-gray-400 text-sm">
+        {/* Messages */}
+        {messages.map((msg, i) => (
+          <ChatMessage key={i} message={msg.text} isUser={msg.isUser} />
+        ))}
 
-              <div className="flex gap-1">
-                <span className="animate-bounce">.</span>
-                <span className="animate-bounce delay-150">.</span>
-                <span className="animate-bounce delay-300">.</span>
-              </div>
+        {/* AI thinking animation */}
+        {loading && (
 
-              AI thinking...
+          <div className="flex gap-2 items-center text-gray-400 text-sm">
 
+            <div className="flex gap-1">
+              <span className="animate-bounce">.</span>
+              <span className="animate-bounce delay-150">.</span>
+              <span className="animate-bounce delay-300">.</span>
             </div>
-          )}
 
-        </div>
+            AI thinking...
 
-        {/* Input Area */}
-        <div className="flex-shrink-0 border-t border-white/10 bg-black/40 backdrop-blur-md">
-          <ChatInput onSend={handleSend} />
-        </div>
+          </div>
 
-      </motion.div>
+        )}
 
-    </div>
+      </div>
+
+      <ChatInput onSend={handleSend} />
+
+    </motion.div>
   );
 }
