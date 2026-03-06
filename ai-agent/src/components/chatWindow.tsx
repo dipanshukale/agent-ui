@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import ChatMessage from "./chatMessage.tsx";
-import ChatInput from "./chatInput.tsx";
+import ChatMessage from "./chatMessage";
+import ChatInput from "./chatInput";
 import { sendMessage } from "../services/api";
 import { motion } from "framer-motion";
 
@@ -17,16 +17,17 @@ export default function ChatWindow() {
   const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+
     chatRef.current?.scrollTo({
       top: chatRef.current.scrollHeight,
-      behavior: "smooth",
+      behavior: "smooth"
     });
+
   }, [messages, loading]);
 
   const handleSend = async (message: string) => {
 
     const userMessage = { text: message, isUser: true };
-
     setMessages((prev) => [...prev, userMessage]);
 
     setLoading(true);
@@ -37,7 +38,7 @@ export default function ChatWindow() {
 
       const aiMessage = {
         text: aiResponse,
-        isUser: false,
+        isUser: false
       };
 
       setMessages((prev) => [...prev, aiMessage]);
@@ -50,57 +51,81 @@ export default function ChatWindow() {
   };
 
   const suggestions = [
-    "What type of cusine your restaurant provides?",
+    "What type of cuisine your restaurant provides?",
     "How can I call them?",
-    "what type of service you provide ?",
+    "What type of service you provide?",
     "What do you know?"
   ];
 
   return (
+
     <motion.div
-      initial={{ opacity: 0, scale: 0.97 }}
+      initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       className="
       w-full
       max-w-4xl
-      h-screen
-      md:h-[85vh]
+      h-[80vh]
+
       flex flex-col
-      backdrop-blur-xl
-      bg-white/5
-      border border-white/10
-      rounded-none md:rounded-3xl
-      shadow-2xl
       overflow-hidden
+
+      rounded-2xl
+      border border-white/10
+
+      shadow-[0_20px_80px_rgba(0,0,0,0.6)]
+
+      bg-gradient-to-br
+      from-[#0f172a]
+      via-[#020617]
+      to-[#020617]
       "
     >
 
       {/* Header */}
-      <div className="p-4 md:p-5 border-b border-white/10 flex justify-between items-center">
 
-        <h1 className="text-white text-lg font-semibold">
+      <div
+        className="
+        p-4
+        border-b border-white/10
+        flex justify-between items-center
+        bg-white/5
+        "
+      >
+
+        <h1 className="text-lg font-semibold text-white">
           Dipanshu AI Assistant
         </h1>
 
-        <span className="text-xs text-purple-400">
-          Intelligent Agent
+        <span
+          className="
+          text-xs
+          text-cyan-400
+          bg-cyan-400/10
+          border border-cyan-400/20
+          px-3 py-1
+          rounded-full
+          "
+        >
+          AI Agent
         </span>
 
       </div>
 
-      {/* Chat Section */}
+
+      {/* Messages Area */}
+
       <div
         ref={chatRef}
         className="
         flex-1
         overflow-y-auto
-        px-4 md:px-6
-        py-4 md:py-6
-        space-y-4
+        px-6
+        py-6
+        space-y-5
         "
       >
 
-        {/* Welcome UI */}
         {messages.length === 0 && (
 
           <div className="flex flex-col items-center justify-center text-center h-full">
@@ -108,18 +133,25 @@ export default function ChatWindow() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-2xl md:text-4xl font-bold text-white mb-4"
+              className="
+              text-3xl
+              font-bold
+              text-transparent
+              bg-clip-text
+              bg-gradient-to-r
+              from-cyan-400
+              to-blue-400
+              mb-4
+              "
             >
-              Welcome to Dipanshu's AI Assistant
+              Your Intelligent AI Agent
             </motion.h2>
 
-            <p className="text-gray-400 max-w-md mb-8 px-2">
+            <p className="text-gray-400 max-w-md mb-8">
               Ask anything about projects, services, or technology.
-              Your intelligent AI assistant is ready to help.
             </p>
 
-            {/* Suggestions */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg px-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
 
               {suggestions.map((s, i) => (
 
@@ -131,11 +163,10 @@ export default function ChatWindow() {
                   hover:bg-white/10
                   border border-white/10
                   text-gray-200
-                  px-3 py-3
+                  px-4 py-3
                   rounded-xl
                   text-sm
                   transition
-                  w-full
                   "
                 >
                   {s}
@@ -149,15 +180,13 @@ export default function ChatWindow() {
 
         )}
 
-        {/* Messages */}
         {messages.map((msg, i) => (
           <ChatMessage key={i} message={msg.text} isUser={msg.isUser} />
         ))}
 
-        {/* AI thinking animation */}
         {loading && (
 
-          <div className="flex gap-2 items-center text-gray-400 text-sm">
+          <div className="flex gap-2 items-center text-cyan-300 text-sm">
 
             <div className="flex gap-1">
               <span className="animate-bounce">.</span>
@@ -173,13 +202,22 @@ export default function ChatWindow() {
 
       </div>
 
-      {/* Input Section */}
-      <div className="border-t border-white/10 bg-black/30 backdrop-blur-md pb-[env(safe-area-inset-bottom)]">
+
+      {/* Input (Always Bottom) */}
+
+      <div
+        className="
+        border-t border-white/10
+        bg-[#020617]
+        p-4
+        "
+      >
 
         <ChatInput onSend={handleSend} />
 
       </div>
 
     </motion.div>
+
   );
 }
