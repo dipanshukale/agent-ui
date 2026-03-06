@@ -54,7 +54,7 @@ export default function ChatWindow() {
     "What type of cuisine your restaurant provides?",
     "How can I call them?",
     "What type of service you provide?",
-    "What do you know?"
+    "What you know?"
   ];
 
   return (
