@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import ChatMessage from "./chatMessage";
 import ChatInput from "./chatInput";
-import { sendMessage } from "../services/api";
+import { sendMessage } from "../services/api.ts";
 import { motion } from "framer-motion";
 
 interface Message {
