@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background: radial-gradient(circle at top, #0f172a, #020617);
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }
