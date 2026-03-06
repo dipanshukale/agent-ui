@@ -60,14 +60,23 @@ export default function ChatWindow() {
     <motion.div
       initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="w-full max-w-4xl h-[85vh] flex flex-col
-      backdrop-blur-xl bg-white/5
+      className="
+      w-full
+      max-w-4xl
+      h-screen
+      md:h-[85vh]
+      flex flex-col
+      backdrop-blur-xl
+      bg-white/5
       border border-white/10
-      rounded-3xl shadow-2xl overflow-hidden"
+      rounded-none md:rounded-3xl
+      shadow-2xl
+      overflow-hidden
+      "
     >
 
       {/* Header */}
-      <div className="p-5 border-b border-white/10 flex justify-between items-center">
+      <div className="p-4 md:p-5 border-b border-white/10 flex justify-between items-center">
 
         <h1 className="text-white text-lg font-semibold">
           Dipanshu AI Assistant
@@ -82,7 +91,13 @@ export default function ChatWindow() {
       {/* Chat Section */}
       <div
         ref={chatRef}
-        className="flex-1 overflow-y-auto px-6 py-6 space-y-4"
+        className="
+        flex-1
+        overflow-y-auto
+        px-4 md:px-6
+        py-4 md:py-6
+        space-y-4
+        "
       >
 
         {/* Welcome UI */}
@@ -93,31 +108,35 @@ export default function ChatWindow() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-3xl md:text-4xl font-bold text-white mb-4"
+              className="text-2xl md:text-4xl font-bold text-white mb-4"
             >
               Welcome to Dipanshu's AI Assistant
             </motion.h2>
 
-            <p className="text-gray-400 max-w-md mb-8">
+            <p className="text-gray-400 max-w-md mb-8 px-2">
               Ask anything about projects, services, or technology.
               Your intelligent AI assistant is ready to help.
             </p>
 
             {/* Suggestions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-lg">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg px-2">
 
               {suggestions.map((s, i) => (
 
                 <button
                   key={i}
                   onClick={() => handleSend(s)}
-                  className="bg-white/5 hover:bg-white/10
+                  className="
+                  bg-white/5
+                  hover:bg-white/10
                   border border-white/10
                   text-gray-200
-                  px-4 py-3
+                  px-3 py-3
                   rounded-xl
                   text-sm
-                  transition"
+                  transition
+                  w-full
+                  "
                 >
                   {s}
                 </button>
@@ -154,7 +173,12 @@ export default function ChatWindow() {
 
       </div>
 
-      <ChatInput onSend={handleSend} />
+      {/* Input Section */}
+      <div className="border-t border-white/10 bg-black/30 backdrop-blur-md pb-[env(safe-area-inset-bottom)]">
+
+        <ChatInput onSend={handleSend} />
+
+      </div>
 
     </motion.div>
   );
