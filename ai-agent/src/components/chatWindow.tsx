@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import ChatMessage from "./chatMessage";
 import ChatInput from "./chatInput";
-import { sendMessage } from "../services/api.ts";
+import { sendMessage } from "../services/api";
 import { motion } from "framer-motion";
+import { Bot, Mail } from "lucide-react";
 
 interface Message {
   text: string;
@@ -13,6 +14,7 @@ export default function ChatWindow() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [recipient, setRecipient] = useState<string | null>(null);
 
   const chatRef = useRef<HTMLDivElement>(null);
 
@@ -27,9 +29,17 @@ export default function ChatWindow() {
 
   const handleSend = async (message: string) => {
 
-    const userMessage = { text: message, isUser: true };
-    setMessages((prev) => [...prev, userMessage]);
+    const emailMatch = message.match(
+      /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i
+    );
 
+    if (emailMatch) {
+      setRecipient(emailMatch[0]);
+    }
+
+    const userMessage = { text: message, isUser: true };
+
+    setMessages((prev) => [...prev, userMessage]);
     setLoading(true);
 
     try {
@@ -43,42 +53,28 @@ export default function ChatWindow() {
 
       setMessages((prev) => [...prev, aiMessage]);
 
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
 
     setLoading(false);
   };
 
-  const suggestions = [
-    "What type of cuisine your restaurant provides?",
-    "How can I call them?",
-    "What type of service you provide?",
-    "What you know?"
-  ];
-
   return (
 
     <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       className="
       w-full
-      max-w-4xl
-      h-[80vh]
-
+      max-w-5xl
+      h-[85vh]
       flex flex-col
-      overflow-hidden
-
       rounded-2xl
+      overflow-hidden
       border border-white/10
-
-      shadow-[0_20px_80px_rgba(0,0,0,0.6)]
-
-      bg-gradient-to-br
-      from-[#0f172a]
-      via-[#020617]
-      to-[#020617]
+      bg-[#020617]
+      shadow-[0_30px_90px_rgba(0,0,0,0.8)]
       "
     >
 
@@ -86,34 +82,63 @@ export default function ChatWindow() {
 
       <div
         className="
-        p-4
+        flex
+        items-center
+        justify-between
+        px-6
+        py-4
         border-b border-white/10
-        flex justify-between items-center
         bg-white/5
         "
       >
 
-        <h1 className="text-lg font-semibold text-white">
-          Dipanshu AI Assistant
-        </h1>
+        <div className="flex items-center gap-3">
 
-        <span
-          className="
-          text-xs
-          text-cyan-400
-          bg-cyan-400/10
-          border border-cyan-400/20
-          px-3 py-1
-          rounded-full
-          "
-        >
-          AI Agent
-        </span>
+          <div className="p-2 bg-cyan-500/10 rounded-lg">
+            <Bot size={20} className="text-cyan-400" />
+          </div>
+
+          <div>
+
+            <h1 className="text-white font-semibold text-lg">
+              Dipanshu AI Automation Agent
+            </h1>
+
+            <p className="text-xs text-gray-400">
+              Chat • Email Automation • Task Assistance
+            </p>
+
+          </div>
+
+        </div>
+
+        {recipient && (
+
+          <div
+            className="
+            flex items-center gap-2
+            text-xs
+            px-3 py-1
+            rounded-full
+            border
+            border-purple-400/30
+            bg-purple-400/10
+            text-purple-300
+            "
+          >
+
+            <Mail size={14} />
+
+            {recipient}
+
+          </div>
+
+        )}
 
       </div>
 
 
-      {/* Messages Area */}
+      {/* Chat Area */}
 
       <div
         ref={chatRef}
@@ -122,20 +147,18 @@ export default function ChatWindow() {
         overflow-y-auto
         px-6
         py-6
-        space-y-5
+        space-y-6
         "
       >
 
         {messages.length === 0 && (
 
-          <div className="flex flex-col items-center justify-center text-center h-full">
+          <div className="h-full flex flex-col items-center justify-center text-center">
 
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+            <h2
               className="
               text-3xl
-              font-bold
+              font-semibold
               text-transparent
               bg-clip-text
               bg-gradient-to-r
@@ -144,37 +167,13 @@ export default function ChatWindow() {
               mb-4
               "
             >
-              Your Intelligent AI Agent
-            </motion.h2>
+             AI Automation Workspace
+            </h2>
 
-            <p className="text-gray-400 max-w-md mb-8">
-              The agent is still learning responses are generated from the knowledge currently available.
+            <p className="text-gray-400 max-w-md">
+              Ask the agent to send emails, draft messages,
+              or automate professional workflows.
             </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
-
-              {suggestions.map((s, i) => (
-
-                <button
-                  key={i}
-                  onClick={() => handleSend(s)}
-                  className="
-                  bg-white/5
-                  hover:bg-white/10
-                  border border-white/10
-                  text-gray-200
-                  px-4 py-3
-                  rounded-xl
-                  text-sm
-                  transition
-                  "
-                >
-                  {s}
-                </button>
-
-              ))}
-
-            </div>
 
           </div>
 
@@ -186,15 +185,15 @@ export default function ChatWindow() {
 
         {loading && (
 
-          <div className="flex gap-2 items-center text-cyan-300 text-sm">
+          <div className="flex items-center gap-3 text-cyan-300 text-sm">
 
             <div className="flex gap-1">
-              <span className="animate-bounce">.</span>
-              <span className="animate-bounce delay-150">.</span>
-              <span className="animate-bounce delay-300">.</span>
+              <span className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></span>
+              <span className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce delay-150"></span>
+              <span className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce delay-300"></span>
             </div>
 
-            AI thinking...
+            Agent executing task...
 
           </div>
 
@@ -203,13 +202,13 @@ export default function ChatWindow() {
       </div>
 
 
-      {/* Input (Always Bottom) */}
+      {/* Input */}
 
       <div
         className="
         border-t border-white/10
-        bg-[#020617]
         p-4
+        bg-[#020617]
         "
       >
 
