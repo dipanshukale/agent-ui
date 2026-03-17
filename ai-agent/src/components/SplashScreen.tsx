@@ -14,7 +14,7 @@ export default function SplashScreen() {
         transition={{ duration: 0.6 }}
         className="text-white text-2xl font-bold"
       >
-        🤖 AI Agent
+        🤖 Personal AI Agent
       </motion.div>
     </motion.div>
   );
