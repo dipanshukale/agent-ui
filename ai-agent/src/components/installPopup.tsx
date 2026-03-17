@@ -7,30 +7,20 @@ export default function InstallPopup() {
   if (!installable) return null;
 
   return (
-    <motion.div
-      initial={{ y: 200, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      className="
-      fixed bottom-0 left-0 right-0
-      bg-[#020617]
-      border-t border-white/10
-      p-4 flex justify-between items-center
-      "
-    >
-      <div>
-        <h2 className="text-white font-semibold">Install AI Agent</h2>
-        <p className="text-gray-400 text-sm">
-          Get app-like experience
-        </p>
+    <motion.div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
+      <div className="bg-[#020617] p-6 rounded-2xl w-[90%] max-w-sm text-center">
+        <h2 className="text-white text-lg font-semibold mb-2">
+          Install AI Agent
+        </h2>
+        <p className="text-gray-400 text-sm mb-4">Get full app experience</p>
+
+        <button
+          onClick={installApp}
+          className="bg-cyan-500 px-4 py-2 rounded-lg text-white w-full"
+        >
+          Install App
+        </button>
       </div>
-      <button
-        onClick={installApp}
-        className="
-        bg-cyan-500 text-white px-4 py-2 rounded-lg
-        "
-      >
-        Install
-      </button>
     </motion.div>
   );
 }
