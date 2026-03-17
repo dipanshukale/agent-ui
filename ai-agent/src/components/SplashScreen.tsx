@@ -8,10 +8,8 @@ export default function SplashScreen() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      {/* Glow Background */}
       <div className="absolute w-[400px] h-[400px] bg-cyan-500/20 blur-3xl rounded-full"></div>
 
-      {/* Logo Circle */}
       <motion.div
         initial={{ scale: 0.6, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -41,7 +39,6 @@ export default function SplashScreen() {
         Automate. Communicate. Execute.
       </motion.p>
 
-      {/* Loading Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

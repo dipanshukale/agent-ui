@@ -1,19 +1,13 @@
-import { useState, useEffect } from "react";
-import SplashScreen from "./components/SplashScreen.tsx";
+import InstallButton from "./components/installButton.tsx";
+import InstallPopup from "./components/installPopup.tsx";
 import ChatWindow from "./components/chatWindow.tsx";
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
-
   return (
     <>
-      {loading && <SplashScreen />}
+      <InstallPopup />
+      <InstallButton />
+
       <div className="h-screen bg-[#020617] flex items-center justify-center">
         <ChatWindow />
       </div>
