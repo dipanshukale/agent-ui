@@ -23,7 +23,6 @@ export default function InstallPopup() {
           Get app-like experience
         </p>
       </div>
-
       <button
         onClick={installApp}
         className="
