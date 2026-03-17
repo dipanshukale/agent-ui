@@ -1,12 +1,22 @@
+import { useState, useEffect } from "react";
+import SplashScreen from "./components/SplashScreen.tsx";
 import ChatWindow from "./components/chatWindow.tsx";
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-4
-    bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1e1b4b]">
-
-      <ChatWindow />
-
-    </div>
+    <>
+      {loading && <SplashScreen />}
+      <div className="h-screen bg-[#020617] flex items-center justify-center">
+        <ChatWindow />
+      </div>
+    </>
   );
 }
