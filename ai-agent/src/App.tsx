@@ -9,7 +9,7 @@ export default function App() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000); // 2 sec splash
+    }, 2000);
   }, []);
 
   return (
